@@ -3,26 +3,29 @@
 namespace Benji07\AdventOfCode\Tests\Day1;
 
 use Benji07\AdventOfCode\Day1\FuelCalculator;
+use Benji07\AdventOfCode\Day1\FuelCalculatorV2;
 use Benji07\AdventOfCode\Day1\Runner;
 use PHPUnit\Framework\TestCase;
 
 class RunnerTest extends TestCase
 {
-    public function testSampleRun()
+    /**
+     * @dataProvider provideTestRun
+     */
+    public function testRun(string $file, FuelCalculator $fuelCalculator, int $expectedFuel): void
     {
-        $masses = file(__DIR__.'/data/sample.txt');
+        $masses = file($file);
 
-        $fuel = (new Runner(new FuelCalculator()))->run($masses);
+        $fuel = (new Runner($fuelCalculator))->run($masses);
 
-        $this->assertEquals(106_795, $fuel);
+        $this->assertEquals($expectedFuel, $fuel);
     }
 
-    public function testRun()
+    public function provideTestRun()
     {
-        $masses = file(__DIR__.'/data/input.txt');
-
-        $fuel = (new Runner(new FuelCalculator()))->run($masses);
-
-        $this->assertEquals(3_412_531, $fuel);
+        yield [__DIR__.'/data/sample.txt', new FuelCalculator(), 106_795];
+        yield [__DIR__.'/data/input.txt', new FuelCalculator(), 3_412_531];
+        yield [__DIR__.'/data/sample.txt', new FuelCalculatorV2(), 160_108];
+        yield [__DIR__.'/data/input.txt', new FuelCalculatorV2(), 5_115_927];
     }
 }
