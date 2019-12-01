@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Benji07\AdventOfCode\Tests\Day1;
 
 use Benji07\AdventOfCode\Day1\FuelCalculatorV2;

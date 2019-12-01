@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Benji07\AdventOfCode\Day1;
@@ -12,6 +13,9 @@ class Runner
         $this->fuelCalculator = $fuelCalculator;
     }
 
+    /**
+     * @param int[] $masses
+     */
     public function run(array $masses): int
     {
         $fullNeeded = 0;
