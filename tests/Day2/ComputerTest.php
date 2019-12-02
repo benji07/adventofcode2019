@@ -48,14 +48,55 @@ class ComputerTest extends TestCase
 
     public function testPart1(): void
     {
-        $input = array_map('intval', explode(',', file_get_contents(__DIR__.'/data/input.txt')));
+        $memory = $this->getMemoryDump();
+
+        $computer = new Computer($memory);
 
         $noun = 12;
         $verb = 2;
 
-        $computer = new Computer($input);
         $computer->resolve($noun, $verb);
 
         $this->assertEquals(3409710, $computer->memory[0]);
+    }
+
+    public function testFindInput(): void
+    {
+        $memory = $this->getMemoryDump();
+
+        $computer = new Computer($memory);
+        [$noun, $verb] = $computer->findInput(3409710);
+
+        $this->assertEquals(12, $noun);
+        $this->assertEquals(2, $verb);
+    }
+
+    public function testPart2(): void
+    {
+        $memory = $this->getMemoryDump();
+
+        $computer = new Computer($memory);
+        [$noun, $verb] = $computer->findInput(19690720);
+
+        $this->assertEquals(79, $noun);
+        $this->assertEquals(12, $verb);
+
+        $this->assertEquals(7912, $noun * 100 + $verb);
+    }
+
+    /**
+     * @return int[]
+     */
+    private function getMemoryDump(): array
+    {
+        $dump = file_get_contents(__DIR__ . '/data/input.txt');
+
+        if ($dump === false) {
+            $this->fail('Invalid file');
+
+            return [];
+        }
+
+        return array_map('intval', explode(',', $dump));
     }
 }

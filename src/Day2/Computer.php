@@ -55,4 +55,20 @@ class Computer
             $i += 4;
         } while ($opcode !== 99);
     }
+
+    /**
+     * @return int[] [$noun, $verb]
+     */
+    public function findInput(int $output): array
+    {
+        for ($noun = 0; $noun <= 99; ++$noun) {
+            for ($verb = 0; $verb <= 99; ++$verb) {
+                $this->resolve($noun, $verb);
+
+                if ($this->memory[0] === $output) {
+                    return [$noun, $verb];
+                }
+            }
+        }
+    }
 }
