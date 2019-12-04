@@ -52,4 +52,28 @@ class PasswordFinderTest extends TestCase
 
         $this->assertEquals(1079, $passwordFinder->count(245318, 765747));
     }
+
+    /**
+     * @dataProvider provideTestAssertNoLargerAdjacentDigits
+     */
+    public function testAssertNoLargerAdjacentDigits(int $number, bool $expectedResult): void
+    {
+        $passwordFinder = new PasswordFinder();
+
+        $this->assertEquals($expectedResult, $passwordFinder->assertNoLargerAdjacentDigits($number));
+    }
+
+    public function provideTestAssertNoLargerAdjacentDigits(): \Generator
+    {
+        yield [112233, true];
+        yield [123444, false];
+        yield [111122, true];
+    }
+
+    public function testCountPart2()
+    {
+        $passwordFinder = new PasswordFinder();
+
+        $this->assertEquals(699, $passwordFinder->countPart2(245318, 765747));
+    }
 }
