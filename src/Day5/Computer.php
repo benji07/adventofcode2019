@@ -16,6 +16,8 @@ class Computer
 
     public int $input;
 
+    private $index = 0;
+
     public function __construct(array $memory)
     {
         $this->initialMemory = $memory;
@@ -24,6 +26,7 @@ class Computer
 
     public function reset(): void
     {
+        $this->index = 0;
         $this->memory = $this->initialMemory;
     }
 
@@ -34,12 +37,12 @@ class Computer
 
     public function getCurrent(): int
     {
-        return current($this->memory);
+        return $this->memory[$this->index];
     }
 
     public function getNext(): int
     {
-        return next($this->memory);
+        return $this->memory[++$this->index];
     }
 
     public function set(int $address, int $value): void
@@ -91,5 +94,10 @@ class Computer
     public function setInput(int $input): void
     {
         $this->input = $input;
+    }
+
+    public function memoryJump(int $index): void
+    {
+        $this->index = $index;
     }
 }

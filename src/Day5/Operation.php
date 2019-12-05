@@ -6,7 +6,11 @@ namespace Benji07\AdventOfCode\Day5;
 
 use Benji07\AdventOfCode\Day5\Operation\Add;
 use Benji07\AdventOfCode\Day5\Operation\End;
+use Benji07\AdventOfCode\Day5\Operation\Equals;
 use Benji07\AdventOfCode\Day5\Operation\Input;
+use Benji07\AdventOfCode\Day5\Operation\JumpIfFalse;
+use Benji07\AdventOfCode\Day5\Operation\JumpIfTrue;
+use Benji07\AdventOfCode\Day5\Operation\LessThan;
 use Benji07\AdventOfCode\Day5\Operation\Multiply;
 use Benji07\AdventOfCode\Day5\Operation\Output;
 
@@ -35,10 +39,18 @@ abstract class Operation
                 return new Input($computer, $opcode, $computer->getNext());
             case Opcode::ACTION_OUTPUT:
                 return new Output($computer, $opcode, $computer->getNext());
+            case Opcode::ACTION_JUMP_TRUE:
+                return new JumpIfTrue($computer, $opcode, $computer->getNext(), $computer->getNext());
+            case Opcode::ACTION_JUMP_FALSE:
+                return new JumpIfFalse($computer, $opcode, $computer->getNext(), $computer->getNext());
+            case Opcode::ACTION_LESS_THAN:
+                return new LessThan($computer, $opcode, $computer->getNext(), $computer->getNext(), $computer->getNext());
+            case Opcode::ACTION_EQUALS:
+                return new Equals($computer, $opcode, $computer->getNext(), $computer->getNext(), $computer->getNext());
             case Opcode::ACTION_END:
                 return new End($computer, $opcode);
             default:
-                throw new \InvalidArgumentException();
+                throw new \InvalidArgumentException('=' . $opcode->action);
         }
     }
 

@@ -13,6 +13,10 @@ class Opcode
     public const ACTION_MULTIPLY = 2;
     public const ACTION_INPUT = 3;
     public const ACTION_OUTPUT = 4;
+    public const ACTION_JUMP_TRUE = 5;
+    public const ACTION_JUMP_FALSE = 6;
+    public const ACTION_LESS_THAN = 7;
+    public const ACTION_EQUALS = 8;
     public const ACTION_END = 99;
 
     private string $value;
