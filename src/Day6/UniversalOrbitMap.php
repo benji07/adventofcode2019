@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Benji07\AdventOfCode\Day6;
 
-class OrbitCounter
+class UniversalOrbitMap
 {
     /** @var Orbit[] */
     public array $orbits = [];
@@ -34,5 +34,15 @@ class OrbitCounter
         return (int) array_sum(array_map(static function (Orbit $orbit) {
             return $orbit->count();
         }, $this->orbits));
+    }
+
+    public function countOrbitalTransfert(string $from, string $to): int
+    {
+        $parentsFrom = $this->orbits[$from]->getParents();
+        $parentsTo = $this->orbits[$to]->getParents();
+
+        $intersectOrbit = array_values(array_intersect($parentsFrom, $parentsTo))[0];
+
+        return (int) array_search($intersectOrbit, $parentsFrom) + (int) array_search($intersectOrbit, $parentsTo);
     }
 }

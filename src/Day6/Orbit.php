@@ -40,6 +40,18 @@ class Orbit
         $this->parent = $orbit;
     }
 
+    /**
+     * @return Orbit[]
+     */
+    public function getParents(): array
+    {
+        if ($this->parent === null) {
+            return [];
+        }
+
+        return array_merge([$this->parent], $this->parent->getParents());
+    }
+
     public function __toString(): string
     {
         return $this->name;
