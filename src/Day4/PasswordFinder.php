@@ -89,14 +89,14 @@ class PasswordFinder
 
         $index = 0;
         $groupedDigits = [
-            $digits[0]
+            $digits[0],
         ];
 
         for ($i = 1; $i < $nbDigits; ++$i) {
             if ($compareDigit == $digits[$i]) {
                 $groupedDigits[$index] .= $digits[$i];
             } else {
-                $index++;
+                ++$index;
                 $groupedDigits[$index] = $digits[$i];
             }
 
