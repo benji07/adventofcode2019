@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Benji07\AdventOfCode\Tests\Day5;
 
-use Benji07\AdventOfCode\Day5\Opcode;
+use Benji07\AdventOfCode\Shared\IntcodeComputer\Opcode;
 use PHPUnit\Framework\TestCase;
 
 class OpcodeTest extends TestCase

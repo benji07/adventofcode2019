@@ -2,31 +2,32 @@
 
 declare(strict_types=1);
 
-namespace Benji07\AdventOfCode\Day5;
+namespace Benji07\AdventOfCode\Shared\IntcodeComputer;
 
-use Benji07\AdventOfCode\Day5\Operation\Add;
-use Benji07\AdventOfCode\Day5\Operation\End;
-use Benji07\AdventOfCode\Day5\Operation\Equals;
-use Benji07\AdventOfCode\Day5\Operation\Input;
-use Benji07\AdventOfCode\Day5\Operation\JumpIfFalse;
-use Benji07\AdventOfCode\Day5\Operation\JumpIfTrue;
-use Benji07\AdventOfCode\Day5\Operation\LessThan;
-use Benji07\AdventOfCode\Day5\Operation\Multiply;
-use Benji07\AdventOfCode\Day5\Operation\Output;
+use Benji07\AdventOfCode\Shared\IntcodeComputer;
+use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\Add;
+use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\End;
+use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\Equals;
+use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\Input;
+use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\JumpIfFalse;
+use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\JumpIfTrue;
+use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\LessThan;
+use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\Multiply;
+use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\Output;
 
 abstract class Operation
 {
-    protected Computer $computer;
+    protected IntcodeComputer $computer;
 
     protected Opcode $opcode;
 
-    public function __construct(Computer $computer, Opcode $opcode)
+    public function __construct(IntcodeComputer $computer, Opcode $opcode)
     {
         $this->computer = $computer;
         $this->opcode = $opcode;
     }
 
-    public static function create(Computer $computer): self
+    public static function create(IntcodeComputer $computer): self
     {
         $opcode = new Opcode($computer->getCurrent());
 
@@ -54,5 +55,5 @@ abstract class Operation
         }
     }
 
-    abstract public function apply(): void;
+    abstract public function apply(string &$output): void;
 }

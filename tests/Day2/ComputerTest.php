@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Benji07\AdventOfCode\Tests\Day2;
 
-use Benji07\AdventOfCode\Day2\Computer;
+use Benji07\AdventOfCode\Shared\IntcodeComputer;
 use PHPUnit\Framework\TestCase;
 
 class ComputerTest extends TestCase
@@ -17,7 +17,7 @@ class ComputerTest extends TestCase
      */
     public function testResolve(array $input, array $expectedOutput): void
     {
-        $computer = new Computer($input);
+        $computer = new IntcodeComputer($input);
         $computer->resolve();
 
         $this->assertEquals(implode(',', $expectedOutput), implode(',', $computer->memory));
@@ -50,7 +50,7 @@ class ComputerTest extends TestCase
     {
         $memory = $this->getMemoryDump();
 
-        $computer = new Computer($memory);
+        $computer = new IntcodeComputer($memory);
 
         $noun = 12;
         $verb = 2;
@@ -64,7 +64,7 @@ class ComputerTest extends TestCase
     {
         $memory = $this->getMemoryDump();
 
-        $computer = new Computer($memory);
+        $computer = new IntcodeComputer($memory);
         [$noun, $verb] = $computer->findInput(3_409_710);
 
         $this->assertEquals(12, $noun);
@@ -75,7 +75,7 @@ class ComputerTest extends TestCase
     {
         $memory = $this->getMemoryDump();
 
-        $computer = new Computer($memory);
+        $computer = new IntcodeComputer($memory);
         [$noun, $verb] = $computer->findInput(19_690_720);
 
         $this->assertEquals(79, $noun);

@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Benji07\AdventOfCode\Day5;
+namespace Benji07\AdventOfCode\Shared;
 
-use Benji07\AdventOfCode\Day5\Exception\EndOfProgramException;
+use Benji07\AdventOfCode\Shared\IntcodeComputer\EndOfProgramException;
+use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation;
 
-class Computer
+class IntcodeComputer
 {
     /** @var int[] */
     private array $initialMemory;
@@ -14,7 +15,8 @@ class Computer
     /** @var int[] */
     public array $memory;
 
-    public int $input;
+    /** @var int[] */
+    public array $input;
 
     private $index = 0;
 
@@ -50,8 +52,10 @@ class Computer
         $this->memory[$address] = $value;
     }
 
-    public function resolve(?int $noun = null, ?int $verb = null): void
+    public function resolve(?int $noun = null, ?int $verb = null): string
     {
+        $output = '';
+
         $this->reset();
 
         if ($noun !== null) {
@@ -66,13 +70,15 @@ class Computer
         do {
             try {
                 $operation = Operation::create($this);
-                $operation->apply();
+                $operation->apply($output);
             } catch (EndOfProgramException $exception) {
-                return;
+                return $output;
             }
 
             $this->getNext();
         } while (true);
+
+        return $output;
     }
 
     /**
@@ -91,9 +97,17 @@ class Computer
         }
     }
 
-    public function setInput(int $input): void
+    /**
+     * @param int|int[] $input
+     */
+    public function setInput($input): void
     {
-        $this->input = $input;
+        $this->input = is_array($input) ? $input : [$input];
+    }
+
+    public function getInput(): int
+    {
+        return array_shift($this->input) ?? 0;
     }
 
     public function memoryJump(int $index): void
