@@ -24,11 +24,6 @@ class Input extends Operation
     {
         $input = $this->computer->getInput();
 
-        $this->computer->set($this->getParameter(), $input);
-    }
-
-    protected function getParameter(): int
-    {
-        return $this->parameter;
+        $this->computer->set($this->parameter, $input);
     }
 }

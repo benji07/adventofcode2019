@@ -18,12 +18,19 @@ class IntcodeComputer
     /** @var int[] */
     public array $input;
 
-    private $index = 0;
+    private bool $throwException;
 
-    public function __construct(array $memory)
+    private bool $breakOnOutput;
+
+    private int $index;
+
+    public function __construct(array $memory, bool $throwException = false, bool $breakOnOutput = false)
     {
         $this->initialMemory = $memory;
         $this->memory = $memory;
+        $this->throwException = $throwException;
+        $this->breakOnOutput = $breakOnOutput;
+        $this->index = 0;
     }
 
     public function reset(): void
@@ -56,8 +63,6 @@ class IntcodeComputer
     {
         $output = '';
 
-        $this->reset();
-
         if ($noun !== null) {
             $this->set(1, $noun);
         }
@@ -66,17 +71,22 @@ class IntcodeComputer
             $this->set(2, $verb);
         }
 
-        reset($this->memory);
-        do {
-            try {
+        try {
+            do {
                 $operation = Operation::create($this);
                 $operation->apply($output);
-            } catch (EndOfProgramException $exception) {
-                return $output;
-            }
 
-            $this->getNext();
-        } while (true);
+                $this->getNext();
+
+                if ($operation instanceof Operation\Output && $this->breakOnOutput) {
+                    return $output;
+                }
+            } while (true);
+        } catch (EndOfProgramException $exception) {
+            if ($this->throwException) {
+                throw $exception;
+            }
+        }
 
         return $output;
     }
@@ -88,6 +98,7 @@ class IntcodeComputer
     {
         for ($noun = 0; $noun <= 99; ++$noun) {
             for ($verb = 0; $verb <= 99; ++$verb) {
+                $this->reset();
                 $this->resolve($noun, $verb);
 
                 if ($this->memory[0] === $output) {

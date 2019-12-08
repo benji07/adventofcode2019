@@ -9,11 +9,8 @@ use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation;
 
 class End extends Operation
 {
-    /** @var int[] */
-    private array $parameters;
-
     public function apply(string &$output): void
     {
-        throw new EndOfProgramException();
+        throw new EndOfProgramException((int) $output);
     }
 }

@@ -11,18 +11,21 @@ class Program
     /** @var Amplifier[] */
     private array $amplifiers;
 
+    private bool $loopFeedBack;
+
     /**
      * @param int[] $memory
      */
-    public function __construct(array $memory)
+    public function __construct(array $memory, bool $loopFeedBack = false)
     {
         $this->amplifiers = [
-            new Amplifier(new IntcodeComputer($memory)),
-            // new Amplifier(new IntcodeComputer($memory)),
-            // new Amplifier(new IntcodeComputer($memory)),
-            // new Amplifier(new IntcodeComputer($memory)),
-            // new Amplifier(new IntcodeComputer($memory)),
+            new Amplifier(new IntcodeComputer($memory, $loopFeedBack, $loopFeedBack)),
+            new Amplifier(new IntcodeComputer($memory, $loopFeedBack, $loopFeedBack)),
+            new Amplifier(new IntcodeComputer($memory, $loopFeedBack, $loopFeedBack)),
+            new Amplifier(new IntcodeComputer($memory, $loopFeedBack, $loopFeedBack)),
+            new Amplifier(new IntcodeComputer($memory, $loopFeedBack, $loopFeedBack)),
         ];
+        $this->loopFeedBack = $loopFeedBack;
     }
 
     /**
@@ -30,46 +33,43 @@ class Program
      */
     public function getThrusterSignal(array $phaseSequence): int
     {
-        $output = 0;
-        foreach ($this->amplifiers as $i => $amplifier) {
-            $output = $amplifier->run([$phaseSequence[$i], $output]);
-        }
+        $previous = $output = 0;
+        try {
+            for ($j = 0; $j < 10; ++$j) {
+                foreach ($this->amplifiers as $i => $amplifier) {
+                    //var_dump('amplifier-'.$i);
+                    $defaultInput = array_shift($phaseSequence);
+                    $input = [];
 
-        return (int) $output;
-    }
+                    if ($defaultInput !== null) {
+                        $input[] = $defaultInput;
+                    }
 
-    /**
-     * @param int[] $phaseSequence
-     */
-    public function getThrusterSignalWithFeedbackLoop(array $phaseSequence): int
-    {
-        $output = 0;
-        //for ($j = 0; $j < 2; $j++) {
-            foreach ($this->amplifiers as $i => $amplifier) {
-                $output = $amplifier->run([$phaseSequence[$i], $output]);
+                    $input[] = $output;
+                    //var_dump('input = ' . implode(', ', $input));
+                    $previous = $output = $amplifier->run($input);
+                    //var_dump('output = ' . $output);
+                }
+
+                if ($this->loopFeedBack === false) {
+                    return (int) $output;
+                }
             }
-        //}
 
-        return (int) $output;
-    }
-
-    public function getMaxThrusterSignal(): int
-    {
-        $maxSignal = 0;
-
-        foreach ($this->getPossiblePhaseSequence(0, 4) as $phaseSequence) {
-            $maxSignal = max($maxSignal, $this->getThrusterSignal($phaseSequence));
+            return (int) $output;
+        } catch (IntcodeComputer\EndOfProgramException $exception) {
+            //var_dump($exception, $exception->getOutput());
+            return $previous;
         }
-
-        return $maxSignal;
     }
 
-    public function getMaxThrusterSignalWithFeedbackLoop(): int
+    public function getMaxThrusterSignal(int $min = 0, int $max = 4): int
     {
         $maxSignal = 0;
 
-        foreach ($this->getPossiblePhaseSequence(5, 9) as $phaseSequence) {
-            $maxSignal = max($maxSignal, $this->getThrusterSignalWithFeedbackLoop($phaseSequence));
+        foreach ($this->getPossiblePhaseSequence($min, $max) as $phaseSequence) {
+            $this->resetComputer();
+            $maxSignal = max($maxSignal, $this->getThrusterSignal($phaseSequence));
         }
 
         return $maxSignal;
@@ -100,5 +100,12 @@ class Program
         }
 
         return;
+    }
+
+    private function resetComputer()
+    {
+        foreach ($this->amplifiers as $amplifier) {
+            $amplifier->reset();
+        }
     }
 }
