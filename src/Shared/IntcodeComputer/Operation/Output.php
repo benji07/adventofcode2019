@@ -23,6 +23,8 @@ class Output extends Operation
     public function apply(string &$output): void
     {
         $output .= $this->getParameter();
+
+        echo $this->getParameter(),"\n";
     }
 
     protected function getParameter(): int
