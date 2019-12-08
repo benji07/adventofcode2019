@@ -1,19 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Benji07\AdventOfCode\Day8;
 
 class LayersExtractor
 {
     /**
-     * @param string $data
-     * @param int   $width
-     * @param int   $height
-     *
      * @return Layer[]
      */
     public function extract(string $data, int $width, int $height): array
     {
         $lines = str_split($data, $width);
+
+        if ($lines === false) {
+            throw new \InvalidArgumentException();
+        }
+
         $layers = [];
         $layer = [];
         foreach ($lines as $line) {
