@@ -26,4 +26,9 @@ class Amplifier
 
         return (int) $result;
     }
+
+    public function reset(): void
+    {
+        $this->computer->reset();
+    }
 }
