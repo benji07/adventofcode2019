@@ -27,6 +27,14 @@ class AdjustRelativeBase extends Operation
 
     protected function getParameter(): int
     {
+        if ($this->opcode->mode[0] === Opcode::MODE_POSITION) {
+            return $this->computer->get($this->parameter);
+        }
+
+        if ($this->opcode->mode[0] === Opcode::MODE_RELATIVE) {
+            return $this->computer->get($this->computer->relativeBase + $this->parameter);
+        }
+
         return $this->parameter;
     }
 }

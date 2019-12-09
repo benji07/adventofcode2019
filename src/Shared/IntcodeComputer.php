@@ -49,7 +49,7 @@ class IntcodeComputer
 
     public function getCurrent(): int
     {
-        return $this->memory[$this->index];
+        return $this->memory[$this->index] ?? 0;
     }
 
     public function getNext(): int

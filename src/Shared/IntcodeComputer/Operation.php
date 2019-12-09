@@ -6,6 +6,7 @@ namespace Benji07\AdventOfCode\Shared\IntcodeComputer;
 
 use Benji07\AdventOfCode\Shared\IntcodeComputer;
 use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\Add;
+use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\AdjustRelativeBase;
 use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\End;
 use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\Equals;
 use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\Input;
@@ -14,7 +15,6 @@ use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\JumpIfTrue;
 use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\LessThan;
 use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\Multiply;
 use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\Output;
-use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\AdjustRelativeBase;
 
 abstract class Operation
 {

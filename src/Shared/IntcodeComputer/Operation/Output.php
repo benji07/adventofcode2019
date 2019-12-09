@@ -32,7 +32,7 @@ class Output extends Operation
         }
 
         if ($this->opcode->mode[0] === Opcode::MODE_RELATIVE) {
-            return $this->computer->get($this->computer->index - 2 + $this->parameter);
+            return $this->computer->get($this->computer->relativeBase + $this->parameter);
         }
 
         return $this->parameter;
