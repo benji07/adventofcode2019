@@ -8,7 +8,7 @@ use Benji07\AdventOfCode\Shared\IntcodeComputer;
 use Benji07\AdventOfCode\Shared\IntcodeComputer\Opcode;
 use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation;
 
-class Output extends Operation
+class AdjustRelativeBase extends Operation
 {
     /** @var int */
     private int $parameter;
@@ -22,19 +22,11 @@ class Output extends Operation
 
     public function apply(string &$output): void
     {
-        $output .= $this->getParameter();
+        $this->computer->relativeBase += $this->getParameter();
     }
 
     protected function getParameter(): int
     {
-        if ($this->opcode->mode[0] === Opcode::MODE_POSITION) {
-            return $this->computer->get($this->parameter);
-        }
-
-        if ($this->opcode->mode[0] === Opcode::MODE_RELATIVE) {
-            return $this->computer->get($this->computer->index - 2 + $this->parameter);
-        }
-
         return $this->parameter;
     }
 }

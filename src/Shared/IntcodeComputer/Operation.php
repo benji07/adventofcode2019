@@ -14,6 +14,7 @@ use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\JumpIfTrue;
 use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\LessThan;
 use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\Multiply;
 use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\Output;
+use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation\AdjustRelativeBase;
 
 abstract class Operation
 {
@@ -48,6 +49,8 @@ abstract class Operation
                 return new LessThan($computer, $opcode, $computer->getNext(), $computer->getNext(), $computer->getNext());
             case Opcode::ACTION_EQUALS:
                 return new Equals($computer, $opcode, $computer->getNext(), $computer->getNext(), $computer->getNext());
+            case Opcode::ACTION_ADJUST_RELATIVE_BASE:
+                return new AdjustRelativeBase($computer, $opcode, $computer->getNext());
             case Opcode::ACTION_END:
                 return new End($computer, $opcode);
             default:

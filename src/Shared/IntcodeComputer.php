@@ -22,7 +22,9 @@ class IntcodeComputer
 
     private bool $breakOnOutput;
 
-    private int $index;
+    public int $index;
+
+    public int $relativeBase;
 
     public function __construct(array $memory, bool $throwException = false, bool $breakOnOutput = false)
     {
@@ -31,6 +33,7 @@ class IntcodeComputer
         $this->throwException = $throwException;
         $this->breakOnOutput = $breakOnOutput;
         $this->index = 0;
+        $this->relativeBase = 0;
     }
 
     public function reset(): void
@@ -41,7 +44,7 @@ class IntcodeComputer
 
     public function get(int $address): int
     {
-        return $this->memory[$address];
+        return $this->memory[$address] ?? 0;
     }
 
     public function getCurrent(): int
@@ -51,7 +54,7 @@ class IntcodeComputer
 
     public function getNext(): int
     {
-        return $this->memory[++$this->index];
+        return $this->memory[++$this->index] ?? 0;
     }
 
     public function set(int $address, int $value): void

@@ -8,6 +8,7 @@ class Opcode
 {
     public const MODE_POSITION = 0;
     public const MODE_IMMEDIATE = 1;
+    public const MODE_RELATIVE = 2;
 
     public const ACTION_ADD = 1;
     public const ACTION_MULTIPLY = 2;
@@ -17,6 +18,7 @@ class Opcode
     public const ACTION_JUMP_FALSE = 6;
     public const ACTION_LESS_THAN = 7;
     public const ACTION_EQUALS = 8;
+    public const ACTION_ADJUST_RELATIVE_BASE = 9;
     public const ACTION_END = 99;
 
     private string $value;

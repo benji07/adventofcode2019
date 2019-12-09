@@ -34,6 +34,10 @@ class Add extends Operation
             return $this->computer->get($this->parameters[$index]);
         }
 
+        if ($this->opcode->mode[$index] === Opcode::MODE_RELATIVE) {
+            return $this->computer->get($this->computer->index - ($index - 1) + $this->parameters[$index]);
+        }
+
         return $this->parameters[$index];
     }
 }
