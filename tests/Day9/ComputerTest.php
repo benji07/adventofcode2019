@@ -41,16 +41,40 @@ class ComputerTest extends TestCase
         ];
     }
 
-    public function testRelativeAdjustRelativeBase()
+    /**
+     * @param int[] $memory
+     *
+     * @dataProvider provideTestAdjustRelativeBase
+     */
+    public function testAdjustRelativeBase(array $memory, int $initialRelativeBase, int $expextedRelativeBase)
     {
-        $computer = new IntcodeComputer([
-            109, 19, 99,
-        ]);
-        $computer->relativeBase = 2000;
+        $computer = new IntcodeComputer($memory);
+        $computer->relativeBase = $initialRelativeBase;
 
         $computer->resolve();
 
-        $this->assertEquals(2019, $computer->relativeBase);
+        $this->assertEquals($expextedRelativeBase, $computer->relativeBase);
+    }
+
+    public function provideTestAdjustRelativeBase(): \Generator
+    {
+        yield [
+            [9, 0, 99],
+            0,
+            9
+        ];
+
+        yield [
+            [109, 19, 99],
+            0,
+            19
+        ];
+
+        yield [
+            [209, 3, 99, 15],
+            0,
+            15
+        ];
     }
 
     public function testPart1()

@@ -183,22 +183,6 @@ class ComputerTest extends TestCase
     /**
      * @return int[]
      */
-    private function getMemoryDumpDay2(): array
-    {
-        $dump = file_get_contents(__DIR__ . '/data/input.txt');
-
-        if ($dump === false) {
-            $this->fail('Invalid file');
-
-            return [];
-        }
-
-        return array_map('intval', explode(',', $dump));
-    }
-
-    /**
-     * @return int[]
-     */
     private function getMemoryDumpDay5(): array
     {
         $dump = file_get_contents(__DIR__ . '/data/input-day5.txt');

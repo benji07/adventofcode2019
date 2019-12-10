@@ -10,31 +10,13 @@ use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation;
 
 class Output extends Operation
 {
-    /** @var int */
-    private int $parameter;
-
     public function __construct(IntcodeComputer $computer, Opcode $opcode, int $parameter)
     {
-        parent::__construct($computer, $opcode);
-
-        $this->parameter = $parameter;
+        parent::__construct($computer, $opcode, $parameter);
     }
 
     public function apply(string &$output): void
     {
-        $output .= $this->getParameter();
-    }
-
-    protected function getParameter(): int
-    {
-        if ($this->opcode->mode[0] === Opcode::MODE_POSITION) {
-            return $this->computer->get($this->parameter);
-        }
-
-        if ($this->opcode->mode[0] === Opcode::MODE_RELATIVE) {
-            return $this->computer->get($this->computer->relativeBase + $this->parameter);
-        }
-
-        return $this->parameter;
+        $output .= $this->getParameter(0);
     }
 }
