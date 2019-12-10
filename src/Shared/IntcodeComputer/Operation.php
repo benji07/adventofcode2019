@@ -20,7 +20,7 @@ abstract class Operation
 {
     protected IntcodeComputer $computer;
 
-    protected Opcode $opcode;
+    public Opcode $opcode;
 
     /** @var int[] */
     public array $parameters;
@@ -71,7 +71,7 @@ abstract class Operation
         }
 
         if ($this->opcode->mode[$index] === Opcode::MODE_RELATIVE) {
-            return $this->computer->get($this->computer->index - ($index - 1) + $this->parameters[$index]);
+            return $this->computer->get($this->computer->relativeBase + $this->parameters[$index]);
         }
 
         return $this->parameters[$index];

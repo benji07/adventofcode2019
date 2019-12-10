@@ -76,10 +76,19 @@ class IntcodeComputer
 
         try {
             do {
+                $index = $this->index;
                 $operation = Operation::create($this);
+//                var_dump([
+//                    'index' => $index,
+//                    'relativeBase' => $this->relativeBase,
+//                    'class' => get_class($operation),
+//                    'opcode' => (string) $operation->opcode,
+//                    'parameters' => $operation->parameters,
+//                ]);
                 $operation->apply($output);
 
                 $this->getNext();
+
 
                 if ($operation instanceof Operation\Output && $this->breakOnOutput) {
                     return $output;

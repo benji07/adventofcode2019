@@ -19,6 +19,6 @@ class Input extends Operation
     {
         $input = $this->computer->getInput();
 
-        $this->computer->set($this->getParameter(0), $input);
+        $this->computer->set($this->parameters[0], $input);
     }
 }

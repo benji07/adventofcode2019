@@ -10,11 +10,6 @@ use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation;
 
 class AdjustRelativeBase extends Operation
 {
-    public function __construct(IntcodeComputer $computer, Opcode $opcode, int $parameter)
-    {
-        parent::__construct($computer, $opcode, $parameter);
-    }
-
     public function apply(string &$output): void
     {
         $this->computer->relativeBase += $this->getParameter(0);
