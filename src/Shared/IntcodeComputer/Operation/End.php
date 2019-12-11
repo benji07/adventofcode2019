@@ -11,6 +11,6 @@ class End extends Operation
 {
     public function apply(string &$output): void
     {
-        throw new EndOfProgramException((int) $output);
+        throw new EndOfProgramException($output);
     }
 }

@@ -12,8 +12,8 @@ class JumpIfTrue extends Operation
 {
     public function apply(string &$output): void
     {
-        if ($this->getParameter(0) !== 0) {
-            $this->computer->memoryJump($this->getParameter(1) - 1);
+        if ($this->getParameter(0) !== '0') {
+            $this->computer->memoryJump((int) $this->getParameter(1) - 1);
         }
     }
 }

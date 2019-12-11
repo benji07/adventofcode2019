@@ -9,13 +9,13 @@ use Benji07\AdventOfCode\Shared\IntcodeComputer\Operation;
 
 class IntcodeComputer
 {
-    /** @var int[] */
+    /** @var string[] */
     private array $initialMemory;
 
-    /** @var int[] */
+    /** @var string[] */
     public array $memory;
 
-    /** @var int[] */
+    /** @var string[] */
     public array $input;
 
     private bool $throwException;
@@ -28,8 +28,8 @@ class IntcodeComputer
 
     public function __construct(array $memory, bool $throwException = false, bool $breakOnOutput = false)
     {
-        $this->initialMemory = $memory;
-        $this->memory = $memory;
+        $this->initialMemory = array_map('trim', array_map('strval', $memory));
+        $this->memory = $this->initialMemory;
         $this->throwException = $throwException;
         $this->breakOnOutput = $breakOnOutput;
         $this->index = 0;
@@ -42,27 +42,27 @@ class IntcodeComputer
         $this->memory = $this->initialMemory;
     }
 
-    public function get(int $address): int
+    public function get(int $address): string
     {
-        return $this->memory[$address] ?? 0;
+        return $this->memory[$address] ?? '0';
     }
 
-    public function getCurrent(): int
+    public function getCurrent(): string
     {
-        return $this->memory[$this->index] ?? 0;
+        return $this->memory[$this->index] ?? '0';
     }
 
-    public function getNext(): int
+    public function getNext(): string
     {
-        return $this->memory[++$this->index] ?? 0;
+        return $this->memory[++$this->index] ?? '0';
     }
 
-    public function set(int $address, int $value): void
+    public function set(int $address, string $value): void
     {
         $this->memory[$address] = $value;
     }
 
-    public function resolve(?int $noun = null, ?int $verb = null): string
+    public function resolve(?string $noun = null, ?string $verb = null): string
     {
         $output = '';
 
@@ -78,17 +78,25 @@ class IntcodeComputer
             do {
                 $index = $this->index;
                 $operation = Operation::create($this);
-//                var_dump([
-//                    'index' => $index,
-//                    'relativeBase' => $this->relativeBase,
-//                    'class' => get_class($operation),
-//                    'opcode' => (string) $operation->opcode,
-//                    'parameters' => $operation->parameters,
-//                ]);
+//                if ($operation instanceof Operation\Equals) {
+//                    var_dump(
+//                        [
+//                            'index' => $index,
+//                            'relativeBase' => $this->relativeBase,
+//                            'class' => get_class($operation),
+//                            'opcode' => (string) $operation->opcode,
+//                            'parameters' => $operation->parameters,
+//                            'input' => $this->input,
+//                            'values' => [
+//                                $operation->getParameter(0),
+//                                $operation->getParameter(1),
+//                            ]
+//                        ]
+//                    );
+//                }
                 $operation->apply($output);
 
                 $this->getNext();
-
 
                 if ($operation instanceof Operation\Output && $this->breakOnOutput) {
                     return $output;
@@ -104,14 +112,14 @@ class IntcodeComputer
     }
 
     /**
-     * @return int[] [$noun, $verb]
+     * @return string[] [$noun, $verb]
      */
-    public function findInput(int $output): array
+    public function findInput(string $output): array
     {
         for ($noun = 0; $noun <= 99; ++$noun) {
             for ($verb = 0; $verb <= 99; ++$verb) {
                 $this->reset();
-                $this->resolve($noun, $verb);
+                $this->resolve((string) $noun, (string) $verb);
 
                 if ($this->memory[0] === $output) {
                     return [$noun, $verb];
@@ -121,16 +129,16 @@ class IntcodeComputer
     }
 
     /**
-     * @param int|int[] $input
+     * @param string|string[] $input
      */
     public function setInput($input): void
     {
         $this->input = is_array($input) ? $input : [$input];
     }
 
-    public function getInput(): int
+    public function getInput(): string
     {
-        return array_shift($this->input) ?? 0;
+        return array_shift($this->input) ?? '0';
     }
 
     public function memoryJump(int $index): void

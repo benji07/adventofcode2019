@@ -6,16 +6,16 @@ namespace Benji07\AdventOfCode\Shared\IntcodeComputer;
 
 class EndOfProgramException extends \DomainException
 {
-    private int $output;
+    private string $output;
 
-    public function __construct(int $output)
+    public function __construct(string $output)
     {
         parent::__construct('end of program');
 
         $this->output = $output;
     }
 
-    public function getOutput(): int
+    public function getOutput(): string
     {
         return $this->output;
     }

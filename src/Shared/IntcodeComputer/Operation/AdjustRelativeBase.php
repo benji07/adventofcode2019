@@ -12,6 +12,6 @@ class AdjustRelativeBase extends Operation
 {
     public function apply(string &$output): void
     {
-        $this->computer->relativeBase += $this->getParameter(0);
+        $this->computer->relativeBase += (int) $this->getParameter(0);
     }
 }

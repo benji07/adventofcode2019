@@ -11,39 +11,39 @@ class ComputerTest extends TestCase
 {
     public function testMultiplyImmediate()
     {
-        $computer = new IntcodeComputer([1002, 4, 3, 4, 33]);
+        $computer = new IntcodeComputer(['1002', '4', '3', '4', '33']);
         $computer->resolve();
 
-        $this->assertEquals([1002, 4, 3, 4, 99], $computer->memory);
+        $this->assertEquals(['1002', '4', '3', '4', '99'], $computer->memory);
     }
 
     public function testNegative()
     {
-        $computer = new IntcodeComputer([1101, 100, -1, 4, 0]);
+        $computer = new IntcodeComputer(['1101', '100', '-1', '4', '0']);
         $computer->resolve();
 
-        $this->assertEquals([1101, 100, -1, 4, 99], $computer->memory);
+        $this->assertEquals(['1101', '100', '-1', '4', '99'], $computer->memory);
     }
 
     public function testSet()
     {
         $computer = new IntcodeComputer([
-            3, 7, 1, 7, 6, 6, 1100, 0, 1, 3, 99,
+            '3', '7', '1', '7', '6', '6', '1100', '0', '1', '3', '99',
         ]);
 
-        $computer->setInput(1);
+        $computer->setInput('1');
 
         $computer->resolve();
 
-        $this->assertEquals([3, 7, 1, 2, 6, 6, 1101, 1, 1, 3, 99], $computer->memory);
+        $this->assertEquals(['3', '7', '1', '2', '6', '6', '1101', '1', '1', '3', '99'], $computer->memory);
     }
 
     public function testPart1()
     {
-        $memory = $this->getMemoryDumpDay5();
+        $memory = $this->getMemoryDumpDay();
 
         $computer = new IntcodeComputer($memory);
-        $computer->setInput(1);
+        $computer->setInput('1');
 
         $result = $computer->resolve();
 
@@ -55,8 +55,9 @@ class ComputerTest extends TestCase
      */
     public function testJump(array $memory, int $input, string $expectedOutput): void
     {
+        $memory = array_map('strval', $memory);
         $computer = new IntcodeComputer($memory);
-        $computer->setInput($input);
+        $computer->setInput((string) $input);
 
         $result = $computer->resolve();
 
@@ -170,10 +171,10 @@ class ComputerTest extends TestCase
 
     public function testPart2()
     {
-        $memory = $this->getMemoryDumpDay5();
+        $memory = $this->getMemoryDumpDay();
 
         $computer = new IntcodeComputer($memory);
-        $computer->setInput(5);
+        $computer->setInput('5');
 
         $result = $computer->resolve();
 
@@ -183,9 +184,9 @@ class ComputerTest extends TestCase
     /**
      * @return int[]
      */
-    private function getMemoryDumpDay5(): array
+    private function getMemoryDumpDay(): array
     {
-        $dump = file_get_contents(__DIR__ . '/data/input-day5.txt');
+        $dump = file_get_contents(__DIR__ . '/data/input.txt');
 
         if ($dump === false) {
             $this->fail('Invalid file');
@@ -193,6 +194,6 @@ class ComputerTest extends TestCase
             return [];
         }
 
-        return array_map('intval', explode(',', $dump));
+        return explode(',', $dump);
     }
 }

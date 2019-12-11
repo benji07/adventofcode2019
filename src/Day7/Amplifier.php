@@ -16,15 +16,13 @@ class Amplifier
     }
 
     /**
-     * @param int[] $input
+     * @param string[] $input
      */
-    public function run(array $input): int
+    public function run(array $input): string
     {
         $this->computer->setInput($input);
 
-        $result = $this->computer->resolve();
-
-        return (int) $result;
+        return $this->computer->resolve();
     }
 
     public function reset(): void
