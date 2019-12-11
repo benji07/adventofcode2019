@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Benji07\AdventOfCode\Day7;
 
 use Benji07\AdventOfCode\Shared\IntcodeComputer;
+use Brick\Math\BigInteger;
 
 class Program
 {
@@ -14,7 +15,7 @@ class Program
     private bool $loopFeedBack;
 
     /**
-     * @param int[] $memory
+     * @param string[] $memory
      */
     public function __construct(array $memory, bool $loopFeedBack = false)
     {
@@ -31,11 +32,12 @@ class Program
     /**
      * @param int[] $phaseSequence
      */
-    public function getThrusterSignal(array $phaseSequence): int
+    public function getThrusterSignal(array $phaseSequence): string
     {
         $previous = $output = 0;
+        $phaseSequence = array_map('strval', $phaseSequence);
         try {
-            for ($j = 0; $j < 10; ++$j) {
+            while (true) {
                 foreach ($this->amplifiers as $i => $amplifier) {
                     //var_dump('amplifier-'.$i);
                     $defaultInput = array_shift($phaseSequence);
@@ -47,32 +49,32 @@ class Program
 
                     $input[] = $output;
                     //var_dump('input = ' . implode(', ', $input));
-                    $previous = $output = $amplifier->run($input);
+                    $previous = $output = $amplifier->run(array_map('strval', $input));
                     //var_dump('output = ' . $output);
                 }
 
                 if ($this->loopFeedBack === false) {
-                    return (int) $output;
+                    return $output;
                 }
             }
 
-            return (int) $output;
+            return $output;
         } catch (IntcodeComputer\EndOfProgramException $exception) {
             //var_dump($exception, $exception->getOutput());
             return $previous;
         }
     }
 
-    public function getMaxThrusterSignal(int $min = 0, int $max = 4): int
+    public function getMaxThrusterSignal(int $min = 0, int $max = 4): string
     {
-        $maxSignal = 0;
+        $maxSignal = BigInteger::of(0);
 
         foreach ($this->getPossiblePhaseSequence($min, $max) as $phaseSequence) {
             $this->resetComputer();
-            $maxSignal = max($maxSignal, $this->getThrusterSignal($phaseSequence));
+            $maxSignal = BigInteger::max($maxSignal, BigInteger::of($this->getThrusterSignal($phaseSequence)));
         }
 
-        return $maxSignal;
+        return (string) $maxSignal;
     }
 
     protected function getPossiblePhaseSequence(int $min, int $max): iterable

@@ -16,6 +16,7 @@ class ComputerTest extends TestCase
      */
     public function testSample(array $memory, string $expectedOutput): void
     {
+        $memory = array_map('strval', $memory);
         $computer = new IntcodeComputer($memory);
 
         $output = $computer->resolve();
@@ -48,6 +49,7 @@ class ComputerTest extends TestCase
      */
     public function testAdjustRelativeBase(array $memory, int $initialRelativeBase, int $expextedRelativeBase)
     {
+        $memory = array_map('strval', $memory);
         $computer = new IntcodeComputer($memory);
         $computer->relativeBase = $initialRelativeBase;
 
@@ -80,10 +82,11 @@ class ComputerTest extends TestCase
     public function testPart1()
     {
         $computer = new IntcodeComputer($this->getMemoryDump());
-        $computer->setInput(1);
+        $computer->setInput('1');
         $output = $computer->resolve();
 
-        $this->assertEquals(0, $output);
+        $this->assertNotEquals('0', $output);
+        $this->assertNotEquals('2030', $output);
     }
 
     /**
@@ -99,6 +102,6 @@ class ComputerTest extends TestCase
             return [];
         }
 
-        return array_map('intval', explode(',', $dump));
+        return explode(',', $dump);
     }
 }

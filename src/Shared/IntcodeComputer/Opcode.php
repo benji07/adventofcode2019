@@ -28,9 +28,9 @@ class Opcode
 
     public int $action;
 
-    public function __construct(int $opcode)
+    public function __construct(string $opcode)
     {
-        $this->value = str_pad((string) $opcode, 5, '0', STR_PAD_LEFT);
+        $this->value = str_pad($opcode, 5, '0', STR_PAD_LEFT);
 
         $this->mode = [
             (int) $this->value[2],

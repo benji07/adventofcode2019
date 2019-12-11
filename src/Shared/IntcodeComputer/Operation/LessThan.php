@@ -13,8 +13,8 @@ class LessThan extends Operation
     public function apply(string &$output): void
     {
         $this->computer->set(
-            $this->parameters[2],
-            (int) ($this->getParameter(0) < $this->getParameter(1))
+            (int) $this->parameters[2],
+            ($this->getParameter(0) < $this->getParameter(1)) ? '1' : '0'
         );
     }
 }

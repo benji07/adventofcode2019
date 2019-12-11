@@ -17,10 +17,11 @@ class ProgramTest extends TestCase
      */
     public function testGetThrusterSignal(array $memory, array $phaseSettings, int $expectedThrusterSignal): void
     {
+        $memory = array_map('strval', $memory);
         $program = new Program($memory);
         $thrusterSignal = $program->getThrusterSignal($phaseSettings);
 
-        $this->assertEquals($expectedThrusterSignal, $thrusterSignal);
+        $this->assertEquals($expectedThrusterSignal, (string) $thrusterSignal);
     }
 
     public function provideTestGetThrusterSignal(): \Generator
@@ -49,7 +50,7 @@ class ProgramTest extends TestCase
         $program = new Program($this->getMemoryDump());
         $thrusterSignal = $program->getMaxThrusterSignal();
 
-        $this->assertEquals(70597, $thrusterSignal);
+        $this->assertEquals('70597', $thrusterSignal);
     }
 
     /**
@@ -60,10 +61,11 @@ class ProgramTest extends TestCase
      */
     public function testGetThrusterSignalWithFeedbackLoop(array $memory, array $phaseSettings, int $expectedThrusterSignal): void
     {
+        $memory = array_map('strval', $memory);
         $program = new Program($memory, true);
         $thrusterSignal = $program->getThrusterSignal($phaseSettings);
 
-        $this->assertEquals($expectedThrusterSignal, $thrusterSignal);
+        $this->assertEquals((string) $expectedThrusterSignal, $thrusterSignal);
     }
 
     public function provideTestGetThrusterSignalWithFeedbackLoop(): \Generator
@@ -88,7 +90,7 @@ class ProgramTest extends TestCase
         $program = new Program($this->getMemoryDump());
         $thrusterSignal = $program->getMaxThrusterSignal(5, 9);
 
-        $this->assertEquals(70597, $thrusterSignal);
+        $this->assertEquals('70597', $thrusterSignal);
     }
 
     /**
@@ -104,6 +106,6 @@ class ProgramTest extends TestCase
             return [];
         }
 
-        return array_map('intval', explode(',', $dump));
+        return explode(',', $dump);
     }
 }

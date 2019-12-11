@@ -22,10 +22,10 @@ abstract class Operation
 
     public Opcode $opcode;
 
-    /** @var int[] */
+    /** @var string[] */
     public array $parameters;
 
-    public function __construct(IntcodeComputer $computer, Opcode $opcode, int ...$parameters)
+    public function __construct(IntcodeComputer $computer, Opcode $opcode, string ...$parameters)
     {
         $this->computer = $computer;
         $this->opcode = $opcode;
@@ -64,14 +64,14 @@ abstract class Operation
 
     abstract public function apply(string &$output): void;
 
-    public function getParameter(int $index): int
+    public function getParameter(int $index): string
     {
         if ($this->opcode->mode[$index] === Opcode::MODE_POSITION) {
-            return $this->computer->get($this->parameters[$index]);
+            return $this->computer->get((int) $this->parameters[$index]);
         }
 
         if ($this->opcode->mode[$index] === Opcode::MODE_RELATIVE) {
-            return $this->computer->get($this->computer->relativeBase + $this->parameters[$index]);
+            return $this->computer->get($this->computer->relativeBase + (int) $this->parameters[$index]);
         }
 
         return $this->parameters[$index];
