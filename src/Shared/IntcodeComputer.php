@@ -28,8 +28,8 @@ class IntcodeComputer
 
     public function __construct(array $memory, bool $throwException = false, bool $breakOnOutput = false)
     {
-        $this->initialMemory = $memory;
-        $this->memory = $memory;
+        $this->initialMemory = array_map('trim', array_map('strval', $memory));
+        $this->memory = $this->initialMemory;
         $this->throwException = $throwException;
         $this->breakOnOutput = $breakOnOutput;
         $this->index = 0;
@@ -78,14 +78,22 @@ class IntcodeComputer
             do {
                 $index = $this->index;
                 $operation = Operation::create($this);
-                var_dump([
-                    'index' => $index,
-                    'relativeBase' => $this->relativeBase,
-                    'class' => get_class($operation),
-                    'opcode' => (string) $operation->opcode,
-                    'parameters' => $operation->parameters,
-                    'input' => $this->input
-                ]);
+//                if ($operation instanceof Operation\Equals) {
+//                    var_dump(
+//                        [
+//                            'index' => $index,
+//                            'relativeBase' => $this->relativeBase,
+//                            'class' => get_class($operation),
+//                            'opcode' => (string) $operation->opcode,
+//                            'parameters' => $operation->parameters,
+//                            'input' => $this->input,
+//                            'values' => [
+//                                $operation->getParameter(0),
+//                                $operation->getParameter(1),
+//                            ]
+//                        ]
+//                    );
+//                }
                 $operation->apply($output);
 
                 $this->getNext();

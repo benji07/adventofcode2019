@@ -29,7 +29,7 @@ abstract class Operation
     {
         $this->computer = $computer;
         $this->opcode = $opcode;
-        $this->parameters = $parameters;
+        $this->parameters = array_map('trim', $parameters);
     }
 
     public static function create(IntcodeComputer $computer): self
