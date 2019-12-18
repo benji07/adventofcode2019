@@ -22,14 +22,15 @@ class Reaction
         $formula = $this->formulas[$type];
 
         do {
-            $previousFormula = $formula;
-            $formula = $this->simplify($formula);
+            do {
+                $previousFormula = $formula;
+                $formula = $this->simplify($formula);
 
-            echo $formula, "\n";
+                echo $formula, "\n";
+            } while ($previousFormula != $formula);
+            // last one ?
+            $formula = $this->simplify($formula, true);
         } while ($previousFormula != $formula);
-
-        // last one ?
-        $formula = $this->simplify($formula, true);
 
         return $formula->inputs[0]->quantity;
     }
@@ -67,7 +68,9 @@ class Reaction
 
                 $reste = $input->quantity - ($newFormula->output->quantity * $multiplier);
 
-                $newInputs[] = new Chemical($reste, $newFormula->output->type);
+                if ($reste > 0) {
+                    $newInputs[] = new Chemical($reste, $newFormula->output->type);
+                }
 
                 continue;
             }
